@@ -107,8 +107,33 @@ CLASS_NAMES_EN = ['airplane', 'automobile', 'bird', 'cat', 'deer',
 
 CLASS_EMOJIS = ['✈️', '🚗', '🐦', '🐱', '🦌', '🐕', '🐸', '🐴', '🚢', '🚚']
 
-# Chemin du modèle
-MODEL_PATH = os.path.join(os.path.dirname(__file__), '..', 'models', 'iic_cifar10_model.pth')
+# Chemin du modèle - compatible local et Streamlit Cloud
+def get_model_path():
+    """Trouve le chemin du modèle (local ou cloud)."""
+    # Option 1: Chemin relatif depuis app/
+    path1 = os.path.join(os.path.dirname(__file__), '..', 'models', 'iic_cifar10_model.pth')
+    if os.path.exists(path1):
+        return os.path.abspath(path1)
+    
+    # Option 2: Chemin absolu pour Streamlit Cloud
+    path2 = '/mount/src/invariant-information-clustering/models/iic_cifar10_model.pth'
+    if os.path.exists(path2):
+        return path2
+    
+    # Option 3: Chercher dans le répertoire courant
+    path3 = os.path.join(os.getcwd(), 'models', 'iic_cifar10_model.pth')
+    if os.path.exists(path3):
+        return path3
+    
+    # Option 4: Chercher dans le parent du répertoire courant
+    path4 = os.path.join(os.path.dirname(os.getcwd()), 'models', 'iic_cifar10_model.pth')
+    if os.path.exists(path4):
+        return path4
+    
+    # Retourner le chemin par défaut (affichera une erreur plus tard)
+    return path1
+
+MODEL_PATH = get_model_path()
 
 
 # =====================================================

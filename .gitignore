@@ -70,11 +70,14 @@ ENV/
 
 # Data and models (don't commit large files)
 data/
-models/
-*.pth
+# models/  # Commenté pour permettre le déploiement Streamlit
 *.pt
 *.h5
 *.pkl
+
+# Autoriser le modèle IIC pour Streamlit Cloud
+!models/
+!models/iic_cifar10_model.pth
 
 # OS
 .DS_Store
